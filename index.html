@@ -157,7 +157,9 @@
 
       if (rect.top < windowHeight * 0.7) {
         card.classList.add('open');
-        scrollHint.style.opacity = 0;
+        if (scrollHint) {
+          scrollHint.style.display = 'none'; // completely remove the hint
+        }
         if (!confettiCreated) {
           confettiCreated = true;
           createConfetti();
