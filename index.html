@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mother's Day Card Reveal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #ffe6f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 200vh;
+      margin: 0;
+      font-family: 'Comic Sans MS', Arial, sans-serif;
+    }
+
+    .card-container {
+      perspective: 1000px;
+      position: relative;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .card {
+      width: 100%;
+      background: #fffbe6;
+      border-radius: 20px;
+      border: 3px dashed #ff66cc;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      transform-style: preserve-3d;
+      transform: rotateX(90deg);
+      transition: transform 1s ease;
+      padding: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card.open {
+      transform: rotateX(0deg);
+    }
+
+    h1 {
+      color: #ff6699;
+      margin-bottom: 15px;
+      animation: bounce 1s infinite alternate;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .emoji {
+      font-size: 2rem;
+      display: inline-block;
+      animation: float 2s infinite ease-in-out;
+    }
+
+    img {
+      border-radius: 15px;
+      margin-top: 15px;
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Confetti */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      opacity: 0.8;
+      border-radius: 50%;
+      animation: fall 3s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-10px); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(600px) rotate(360deg); }
+    }
+
+    /* Scroll hint arrow */
+    .scroll-hint {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      color: #ff6699;
+      opacity: 0.7;
+      animation: hint 1.5s infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes hint {
+      0% { transform: translateX(-50%) translateY(0); opacity: 0.7; }
+      100% { transform: translateX(-50%) translateY(10px); opacity: 1; }
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 500px) {
+      h1 { font-size: 1.5rem; }
+      .emoji { font-size: 1.5rem; }
+      p { font-size: 14px; }
+      .card { padding: 15px; }
+      .scroll-hint { font-size: 1.5rem; top: -30px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card-container">
+    <div class="scroll-hint">⬆ Scroll Up / Down ⬇</div>
+    <div class="card" id="card">
+      <h1>Happy Mother's Day! 🎉</h1>
+      <p>
+        Hey Mom, thanks for always:<br>
+        <span class="emoji">🧦</span> Finding my lost socks<br>
+        <span class="emoji">🍳</span> Pretending my cooking is gourmet<br>
+        <span class="emoji">🤯</span> Surviving my random life chaos
+      </p>
+      <p>You deserve a medal 🏅, unlimited chocolate 🍫, and maybe a tiny island somewhere far away 🌴.</p>
+      <p style="font-weight:bold; color:#ff6600;">Love, Your Favorite Child 😎</p>
+      <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" alt="Funny hug gif">
+    </div>
+  </div>
+
+  <script>
+    const card = document.getElementById('card');
+    const cardContainer = document.querySelector('.card-container');
+    let confettiCreated = false;
+
+    function createConfetti() {
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`;
+        confetti.style.width = confetti.style.height = (5 + Math.random() * 5) + 'px';
+        confetti.style.animationDuration = (2 + Math.random() * 3) + 's';
+        cardContainer.appendChild(confetti);
+      }
+    }
+
+    window.addEventListener('scroll', () => {
+      const rect = card.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      if (rect.top < windowHeight * 0.7) {
+        card.classList.add('open');
+        if (!confettiCreated) {
+          confettiCreated = true;
+          createConfetti();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
